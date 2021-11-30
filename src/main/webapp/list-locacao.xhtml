@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="corpo">
+
+		<title>Consulta de Locações</title>
+
+		<h:form id="formCadLocacao">
+
+			<p:growl id="growl" showDetail="true" life="4000" />
+
+			<div align="center">
+
+				<p:tabView>
+
+					<p:tab id="cadLocacao" title="Consulta de Locações">
+
+						<p:panel id="pnLocacao">
+
+							<h:panelGrid columns="2" cellspacing="10px">
+								<p:outputLabel value="Tipo de Pesquisa:"
+									style="font-size: 18px; font: bold" />
+								<p:selectOneRadio value="#{listLocacaoBacking.tipoPesquisa}">
+									<f:selectItem itemLabel="Data de Locação" itemValue="1" />
+									<f:selectItem itemLabel="Locações Devolvidas" itemValue="2" />
+									<f:selectItem itemLabel="Locações Não Devolvidas" itemValue="3" />
+									<f:selectItem itemLabel="Todas" itemValue="4" />
+									<p:ajax event="click" update="@form"
+										listener="#{listLocacaoBacking.pesquisar}" />
+								</p:selectOneRadio>
+							</h:panelGrid>
+
+							<h:panelGrid columns="5" cellpadding="10px">
+								<p:outputLabel value="Data Inicial:" />
+								<p:calendar value="#{listLocacaoBacking.dataInicial}"
+									disabled="#{!listLocacaoBacking.data}" pattern="dd/MM/yyyy"
+									placeholder="Ex: 31/12/1990"
+									maxdate="#{listLocacaoBacking.maxDate}" />
+								<p:outputLabel value="Data Final:" />
+								<p:calendar value="#{listLocacaoBacking.dataFinal}"
+									disabled="#{!listLocacaoBacking.data}" pattern="dd/MM/yyyy"
+									placeholder="Ex: #{listLocacaoBacking.dataAtual}"
+									maxdate="#{listLocacaoBacking.maxDate}" />
+								<p:commandButton id="btnPesquisar" value="Pesquisar"
+									action="#{listLocacaoBacking.pesquisarLocacoes}"
+									disabled="#{!listLocacaoBacking.data}" update="@form"
+									style="width: 200px; text-align: center" />
+							</h:panelGrid>
+
+							<p:spacer width="10" />
+
+							<h:panelGrid columns="1">
+
+								<p:dataTable id="tabelaLocacao"
+									value="#{listLocacaoBacking.listaLocacoes}" var="locacao"
+									lazy="true" emptyMessage="Nenhum registro encontrado!"
+									widgetVar="dtWidgetVar" rowKey="#{locacao.idLocacao}"
+									selectionMode="single"
+									selection="#{listLocacaoBacking.locacaoSelecionada}">
+
+									<f:facet name="header">
+            							Locações Cadastradas
+       								</f:facet>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Código" />
+										</f:facet>
+										<div align="center">
+											<h:outputText value="#{locacao.idLocacao}" />
+										</div>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Cliente" />
+										</f:facet>
+										<h:outputText value="#{locacao.clienteIdCliente.nome}" />
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Data Locação" />
+										</f:facet>
+										<div align="center">
+											<h:outputText value="#{locacao.dataLocacao}" />
+										</div>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Valor" />
+										</f:facet>
+										<div align="center">
+											<h:outputText value="#{locacao.valorFormatado}" />
+										</div>
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Devolvido" />
+										</f:facet>
+										<div align="center">
+											<h:outputText value="#{locacao.devolvido}" />
+										</div>
+									</p:column>
+
+								</p:dataTable>
+
+								<p:contextMenu for="tabelaLocacao">
+									<p:menuitem value="Detalhar"
+										action="#{listLocacaoBacking.detalhar}" update="@form" />
+								</p:contextMenu>
+							</h:panelGrid>
+
+							<p:spacer width="20" />
+
+							<h:panelGrid columns="1">
+								<p:commandButton id="btnSair" value="Sair"
+									action="#{listLocacaoBacking.sair}"
+									onclick="PF('dtWidgetVar').unselectAllRows()" update="@form"
+									style="width: 200px" />
+							</h:panelGrid>
+
+						</p:panel>
+
+						<p:blockUI block="pnLocacao" trigger="btnPesquisar" />
+
+					</p:tab>
+
+				</p:tabView>
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="corpo">
+
+		<title>Efetuar Devolução</title>
+
+		<h:form id="formCadDevolucao">
+
+			<p:growl id="growl" showDetail="true" life="4000" />
+
+			<div align="center">
+
+				<p:tabView>
+
+					<p:tab id="cadDevolucao" title="Devolução de Filmes">
+
+						<p:panel id="pnDevolucao">
+
+							<h:panelGrid columns="3">
+
+								<p:outputLabel value="Locações:" />
+								<p:selectOneMenu filter="true"
+									value="#{cadDevolucaoBacking.locacao}" size="100">
+									<f:selectItem itemValue="" itemLabel="- Selecione Locação -" />
+									<f:selectItems value="#{cadDevolucaoBacking.listaLocacoes}"
+										var="locacao"
+										itemLabel="Cód: #{locacao.idLocacao} - #{locacao.dataLocacao} - #{locacao.clienteIdCliente.nome}"
+										itemValue="#{locacao.idLocacao}" />
+									<p:ajax event="change" update="@form"
+										listener="#{cadDevolucaoBacking.desbloqueioDevolucao}" />
+								</p:selectOneMenu>
+
+								<p:commandButton id="btnSelecionar"
+									disabled="#{cadDevolucaoBacking.bloqueio}"
+									value="Carregar Locação"
+									action="#{cadDevolucaoBacking.carregarLocacao}" update="@form"
+									style="width: 200px; text-align: center" />
+
+							</h:panelGrid>
+
+							<p:spacer width="40" />
+
+							<h:panelGrid columns="2">
+
+								<p:outputLabel value="Cliente:" />
+								<p:inputText disabled="true"
+									value="#{cadDevolucaoBacking.nomeCliente}" size="60" />
+
+								<p:outputLabel value="Data Locação:" />
+								<p:inputText disabled="true"
+									value="#{cadDevolucaoBacking.dataLocacao}" size="25" />
+
+								<p:outputLabel value="Data Devolução:" />
+								<p:inputText disabled="true"
+									value="#{cadDevolucaoBacking.dataDevolucaoLocacao}" size="25" />
+
+								<p:outputLabel value="Data Atual:" />
+								<p:inputText disabled="true"
+									value="#{cadDevolucaoBacking.dataDevolucaoAtual}" size="25" />
+
+							</h:panelGrid>
+
+							<p:spacer width="20" />
+
+							<h:panelGrid columns="1">
+
+								<p:dataTable id="tabelaFilmes"
+									value="#{cadDevolucaoBacking.listaFilmes}" var="filme"
+									emptyMessage="">
+
+									<f:facet name="header">
+            							Filmes Locados
+       								</f:facet>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Nome" />
+										</f:facet>
+										<h:outputText value="#{filme.nome}" />
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Gênero" />
+										</f:facet>
+										<h:outputText value="#{filme.genero}" />
+									</p:column>
+
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="Valor" />
+										</f:facet>
+										<h:outputText value="#{filme.valorFormatado}" />
+									</p:column>
+
+								</p:dataTable>
+
+							</h:panelGrid>
+
+							<p:spacer width="20" />
+
+							<h:panelGrid columns="3">
+
+								<p:commandButton id="btnDevolver" value="Devolver"
+									disabled="#{!cadDevolucaoBacking.carregado}"
+									action="#{cadDevolucaoBacking.salvar}" update="@form"
+									style="width: 100px" />
+
+								<p:commandButton id="btnCancelar" value="Cancelar"
+									disabled="#{!cadDevolucaoBacking.carregado}"
+									action="#{cadDevolucaoBacking.cancelar}" update="@form"
+									style="width: 100px" />
+
+								<p:commandButton id="btnSair" value="Sair"
+									disabled="#{cadDevolucaoBacking.carregado}"
+									action="#{cadDevolucaoBacking.sair}" update="@form"
+									style="width: 100px" />
+
+							</h:panelGrid>
+
+						</p:panel>
+
+						<p:blockUI block="pnDevolucao" trigger="btnDevolver" />
+
+					</p:tab>
+
+				</p:tabView>
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

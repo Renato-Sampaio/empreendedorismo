@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="corpo">
+
+		<title>Efetuar Locação</title>
+
+		<h:form id="formCadLocacao">
+
+			<p:growl id="growl" showDetail="true" life="4000" />
+
+			<div align="center">
+
+				<p:tabView>
+
+					<p:tab id="cadLocacao" title="Atendimento">
+
+						<p:panel id="pnLocacao">
+
+							<div align="center">
+
+								<h:panelGrid columns="2">
+
+									<p:outputLabel value="Médico:" />
+									<p:inputText disabled="true"
+										value="#{loginBacking.funcionarioLogado.nome}"
+										style="width: 338px" />
+
+									<p:outputLabel value="Paciente:" />
+									<p:selectOneMenu filter="true"
+										value="#{cadLocacaoBacking.clienteCombo}" style="width: 300px">
+										<f:selectItem itemValue="" itemLabel="- Selecione um Paciente -" />
+										<f:selectItems value="#{cadLocacaoBacking.listaClientes}"
+											var="cliente" itemLabel="#{cliente.nome}"
+											itemValue="#{cliente.idCliente}" />
+										<p:ajax event="change" update="@form"
+											listener="#{cadLocacaoBacking.desbloqueioFilmes}" />
+									</p:selectOneMenu>
+
+								</h:panelGrid>
+
+							
+
+							</div>
+
+							<div align="center">
+
+								<p:spacer width="20" />
+
+								
+
+								<p:spacer width="20" />
+
+								<h:panelGrid columns="2">
+
+									
+
+									<p:outputLabel value="Data da Consulta:" />
+									<p:inputText disabled="true"
+										value="#{cadLocacaoBacking.dataLocacao}" size="20" />
+								</h:panelGrid>
+									
+					<h:panelGrid columns="1">
+									<p:outputLabel value="Receituário:" />
+					</h:panelGrid>
+								<h:panelGrid columns="2">
+									<p:outputLabel value="Remédio:" />
+									<p:inputText value="#{cadFuncionarioBacking.complemento}"
+								size="20" placeholder="Ex: Sala B" />
+								
+								<p:outputLabel value="Horário:" />
+									<p:inputText value="#{cadFuncionarioBacking.complemento}"
+								size="20" placeholder="Ex: Sala B" />
+								
+									<p:outputLabel value="Quantidade:" />
+									
+									<p:inputText value="#{cadFuncionarioBacking.complemento}"
+								size="20" placeholder="Ex: Sala B" />
+									
+									
+									
+								</h:panelGrid>
+
+							</div>
+
+							<p:spacer width="20" />
+
+							<div align="center">
+
+								<h:panelGrid columns="3">
+
+									<p:commandButton id="btnSalvar" value="Salvar"
+										disabled="#{cadLocacaoBacking.bloqueio}"
+										action="#{cadLocacaoBacking.salvar}" update="@form"
+										style="width: 100px; text-align: center" />
+
+									<p:commandButton id="btnCancelar" value="Cancelar"
+										disabled="#{cadLocacaoBacking.bloqueio}"
+										action="#{cadLocacaoBacking.cancelar}" update="@form"
+										style="width: 100px" />
+
+									<p:commandButton id="btnSair" value="Sair"
+										disabled="#{!cadLocacaoBacking.bloqueio}"
+										action="#{cadLocacaoBacking.sair}" update="@form"
+										style="width: 100px" />
+
+								</h:panelGrid>
+
+							</div>
+
+						</p:panel>
+
+						<p:blockUI block="pnLocacao" trigger="btnSalvar" />
+
+					</p:tab>
+
+				</p:tabView>
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

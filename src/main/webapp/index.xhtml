@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="corpo">
+		<title>Sistema - Consultório</title>
+
+		<h:form>
+
+			<p:spacer width="50" />
+
+			<div align="center">
+			
+				<h:panelGrid rendered="#{loginBacking.user}" columns="2"
+					cellspacing="30px">
+
+					<p:commandButton id="btnCliente" value="Cadastrar Cliente"
+						action="#{indexBacking.cliente}" update="@form"
+						style="padding: 32px 16px; font-size: 24px" />
+
+				
+
+					<p:commandButton id="btnFarmacia" value="Cadastrar Farmácia"
+						action="#{indexBacking.funcionario}" update="@form"
+						style="padding: 32px 16px; font-size: 24px" />
+
+				</h:panelGrid>
+
+				<h:panelGrid rendered="#{loginBacking.user}" columns="2"
+					cellspacing="30px">
+
+					<p:commandButton id="btnLocacao" value="Realizar Atendimento"
+						action="#{indexBacking.locacao}" update="@form"
+						style="padding: 32px 16px; font-size: 24px" />
+
+					  
+
+				</h:panelGrid>
+
+				<h:panelGrid rendered="#{loginBacking.user}" columns="3"
+					cellspacing="30px">
+
+					<p:commandButton id="btnConsultarLocacao"
+						value="Consultar - Histórico de Atendimento"
+						action="#{indexBacking.consultaLocacao}" update="@form"
+						style="padding: 32px 16px; font-size: 24px" />
+
+					
+
+					<p:commandButton id="btnConsultarCliente"
+						value="Consultar - Cadastro de Clientes"
+						action="#{indexBacking.consultaCliente}" update="@form"
+						style="padding: 32px 16px; font-size: 24px" />
+
+				</h:panelGrid>
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
